@@ -1,12 +1,25 @@
-/node_modules/
 
 
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-*.code-workspace
 
 # Local History for Visual Studio Code
 .history/
+# Зависимости
+node_modules/
+
+# Личные данные пользователя
+user.js
+
+# Отчёты Playwright
+playwright-report/
+playwright-results/
+
+# Покрытие Jest
+coverage/
+
+# Сборки и логи
+logs/
+*.log
+
+# IDE
+.vscode/
+.idea/
