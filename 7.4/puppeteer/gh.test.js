@@ -1,13 +1,16 @@
+let page;
+
+beforeEach(async () => {
+  page = await browser.newPage();
+});
+
+afterEach(async () => {
+  await page.close();
+});
+
 describe("GitHub team page tests", () => {
-  let page;
-
   beforeEach(async () => {
-    page = await browser.newPage();
     await page.goto("https://github.com/team");
-  });
-
-  afterEach(async () => {
-    await page.close();
   });
 
   test(
@@ -15,7 +18,6 @@ describe("GitHub team page tests", () => {
     async () => {
       await page.click("header div div a");
       await page.waitForSelector("main h1", { timeout: 5000 });
-
       const title = await page.title();
       expect(title).toEqual(
         "GitHub · Build and ship software on a single, collaborative platform · GitHub"
@@ -46,35 +48,32 @@ describe("GitHub team page tests", () => {
 });
 
 describe("GitHub public pages h1 headers", () => {
-  let page;
   const ua =
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125 Safari/537.36";
 
   beforeEach(async () => {
-    page = await browser.newPage();
-    await page.setUserAgent(ua); // маскируем Puppeteer под обычный Chrome
+    await page.setUserAgent(ua);
   });
 
-  afterEach(async () => {
-    await page.close();
-  });
-
-test(
-  "H1 on /enterprise",
-  async () => {
-    await page.goto("https://github.com/enterprise", { waitUntil: "domcontentloaded" });
-    await page.waitForSelector("main h1", { timeout: 7000 });
-
-    const h1 = await page.$eval("main h1", el => el.textContent.trim());
-    expect(h1).toMatch(/ai.?powered.*developer platform/i);  
-  },
-  15_000
-);
+  test(
+    "H1 on /enterprise",
+    async () => {
+      await page.goto("https://github.com/enterprise", {
+        waitUntil: "domcontentloaded",
+      });
+      await page.waitForSelector("main h1", { timeout: 7000 });
+      const h1 = await page.$eval("main h1", (el) => el.textContent.trim());
+      expect(h1).toMatch(/ai.?powered.*developer platform/i);
+    },
+    15_000
+  );
 
   test(
     "H1 on /features",
     async () => {
-      await page.goto("https://github.com/features", { waitUntil: "domcontentloaded" });
+      await page.goto("https://github.com/features", {
+        waitUntil: "domcontentloaded",
+      });
       await page.waitForSelector("main h1", { timeout: 5000 });
       const h1 = await page.$eval("main h1", (el) => el.textContent.trim());
       expect(h1).toEqual("The tools you need to build what you want");
@@ -85,7 +84,9 @@ test(
   test(
     "H1 on /marketplace",
     async () => {
-      await page.goto("https://github.com/marketplace", { waitUntil: "domcontentloaded" });
+      await page.goto("https://github.com/marketplace", {
+        waitUntil: "domcontentloaded",
+      });
       await page.waitForSelector("main h1", { timeout: 5000 });
       const h1 = await page.$eval("main h1", (el) => el.textContent.trim());
       expect(h1).toEqual("Enhance your workflow with extensions");
@@ -93,4 +94,5 @@ test(
     15_000
   );
 });
+
 
